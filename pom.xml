@@ -22,7 +22,7 @@
     <modules>
         <module>helloworld</module>
         <module>test</module>
-        <module>fx</module>
+        <module>netty</module>
     </modules>
 
 
