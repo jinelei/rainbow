@@ -1,3 +1,3 @@
 module rainbow.test {
-    requires rainbow.helloworld;
+    requires transitive rainbow.helloworld;
 }

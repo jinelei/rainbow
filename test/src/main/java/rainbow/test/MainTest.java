@@ -1,5 +1,6 @@
 package rainbow.test;
 
+import org.slf4j.LoggerFactory;
 import rainbow.helloworld.HelloWorld;
 
 import java.nio.channels.Pipe;

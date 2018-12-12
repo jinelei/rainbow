@@ -22,7 +22,8 @@
     <modules>
         <module>helloworld</module>
         <module>test</module>
-        <module>netty</module>
+        <module>server</module>
+        <module>logger</module>
     </modules>
 
 
