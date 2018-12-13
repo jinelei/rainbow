@@ -8,6 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import rainbow.server.handler.EchoServerHandler;
 
 /**
@@ -31,7 +32,9 @@ public class DiscardServer {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
-                            socketChannel.pipeline().addLast(new EchoServerHandler());
+                            socketChannel.pipeline()
+                                    .addLast("idleStateHandler", new IdleStateHandler(10, 20, 30))
+                                    .addLast("echoServerHandler", new EchoServerHandler());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)
