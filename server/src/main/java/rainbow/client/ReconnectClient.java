@@ -15,16 +15,24 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReconnectClient {
     private int port;
-    private Bootstrap bootstrap = new Bootstrap();
-    private EventLoopGroup group = new NioEventLoopGroup();
+    private String host;
+    private Bootstrap bootstrap;
+    private EventLoopGroup group;
     private static Channel channel;
 
+    public ReconnectClient() {
+        this.port = 9000;
+        this.host = "127.0.0.1";
+    }
 
-    public ReconnectClient(int port) {
+    public ReconnectClient(int port, String host) {
         this.port = port;
+        this.host = host;
     }
 
     public void run() throws InterruptedException {
+        group = new NioEventLoopGroup();
+        bootstrap = new Bootstrap();
         bootstrap.group(group)
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.TCP_NODELAY, true)
@@ -37,7 +45,7 @@ public class ReconnectClient {
                                 .addLast("timeoutClentHandler", new HeartBeatHandler());
                     }
                 });
-        ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", port).sync();
+        ChannelFuture channelFuture = bootstrap.connect(host, port).sync();
         channelFuture.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture futureListener) throws Exception {
@@ -52,11 +60,6 @@ public class ReconnectClient {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        int port = 9000;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        }
-        ReconnectClient client = new ReconnectClient(port);
-        client.run();
+        new ReconnectClient().run();
     }
 }
