@@ -4,6 +4,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 
@@ -16,25 +17,12 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-//        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
-        if (evt instanceof IdleStateEvent) {
-            IdleStateEvent event = (IdleStateEvent) evt;
-            switch (event.state()) {
-                case READER_IDLE:
-                    break;
-                case WRITER_IDLE:
-                    break;
-                case ALL_IDLE:
-                    reconnenct(ctx);
-                    break;
-                default:
-                    break;
-            }
+        if (evt instanceof IdleStateEvent && ((IdleStateEvent) evt).state().equals(IdleState.ALL_IDLE)) {
+            reconnenct(ctx);
         }
     }
 
     public void reconnenct(ChannelHandlerContext ctx) {
-        System.out.println("reconnect");
-        ctx.writeAndFlush(Unpooled.copiedBuffer("reconnect\n", CharsetUtil.UTF_8));
+        ctx.writeAndFlush(Unpooled.copiedBuffer(new byte[]{'\0'}));
     }
 }
