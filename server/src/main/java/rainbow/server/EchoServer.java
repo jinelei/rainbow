@@ -14,10 +14,10 @@ import rainbow.server.handler.EchoServerHandler;
 /**
  * @author zhenlei
  */
-public class DiscardServer {
+public class EchoServer {
     private int port;
 
-    public DiscardServer(int port) {
+    public EchoServer(int port) {
         this.port = port;
     }
 
@@ -33,7 +33,7 @@ public class DiscardServer {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
                             socketChannel.pipeline()
-                                    .addLast("idleStateHandler", new IdleStateHandler(10, 20, 30))
+                                    .addLast("idleStateHandler", new IdleStateHandler(0, 0, 10))
                                     .addLast("echoServerHandler", new EchoServerHandler());
                         }
                     })
@@ -52,7 +52,7 @@ public class DiscardServer {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
-        new DiscardServer(port).run();
+        new EchoServer(port).run();
     }
 
 
