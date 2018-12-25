@@ -1,0 +1,40 @@
+@startuml
+
+package factory {
+
+    interface Shape {
+        +void draw()
+    }
+
+    class Circle {
+        +void draw()
+    }
+
+    class Square {
+        +void draw()
+    }
+
+    class Rectangle {
+        +void draw()
+    }
+
+    Circle <|-- Shape: implements
+    Square <|-- Shape: implements
+    Rectangle <|-- Shape: implements
+
+}
+
+class ShapeFactory {
+    +Shape getShape()
+}
+
+factory --> ShapeFactory: creates
+
+class FactoryPatternDemo {
+    +void main()
+}
+
+FactoryPatternDemo --> ShapeFactory: asks
+
+
+@enduml
