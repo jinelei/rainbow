@@ -1,4 +1,4 @@
-package factorypattern;
+package abstractfactory;
 
 import java.util.Random;
 

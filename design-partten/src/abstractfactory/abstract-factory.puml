@@ -1,0 +1,75 @@
+@startuml
+
+package shapeFactory{
+
+    interface Shape {
+        +void draw()
+    }
+
+    class Circle {
+        +void draw()
+    }
+
+    class Square {
+        +void draw()
+    }
+
+    class Rectangle {
+        +void draw()
+    }
+
+    Circle <|-- Shape: implements
+    Square <|-- Shape: implements
+    Rectangle <|-- Shape: implements
+
+}
+
+package colorFactory{
+
+    interface Color {
+        +void fill()
+    }
+
+    class Red {
+        +void fill()
+    }
+
+    class Green {
+        +void fill()
+    }
+
+    class Blue {
+        +void fill()
+    }
+
+    Red <|-- Color: implements
+    Green <|-- Color: implements
+    Blue <|-- Color: implements
+
+}
+
+class ShapeFactory {
+    +Shape getShape()
+}
+
+class ColorFactory {
+    +Color getColor()
+}
+
+class AbstractFactory {
+    +Shape getShape()
+    +Color getColor()
+}
+
+AbstractFactory --> ShapeFactory: extends
+AbstractFactory --> ColorFactory: extends
+
+
+class FactoryPatternDemo {
+    +void main()
+}
+
+FactoryPatternDemo --> ShapeFactory: asks
+
+
+@enduml
