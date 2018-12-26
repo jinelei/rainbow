@@ -56,6 +56,9 @@ class ColorFactory {
     +Color getColor()
 }
 
+ShapeFactory --|> shapeFactory: creates
+ColorFactory --|> colorFactory: creates
+
 class AbstractFactory {
     +Shape getShape()
     +Color getColor()
@@ -64,12 +67,17 @@ class AbstractFactory {
 AbstractFactory --> ShapeFactory: extends
 AbstractFactory --> ColorFactory: extends
 
+class FactoryProducer {
+    +AbstractFactory getFactory()
+}
 
-class FactoryPatternDemo {
+FactoryProducer --|> AbstractFactory: uses
+
+class AbstractFactoryPatternDemo {
     +void main()
 }
 
-FactoryPatternDemo --> ShapeFactory: asks
+AbstractFactoryPatternDemo --|> FactoryProducer: uses
 
 
 @enduml
