@@ -5,8 +5,14 @@ import java.util.Random;
 /**
  * @author zhenlei
  */
-public class ShapeFactory {
-    public static Shape getShape() {
+public class ShapeFactory extends AbstractFactory {
+    @Override
+    public Color getColor() {
+        return null;
+    }
+
+    @Override
+    public Shape getShape() {
         switch (new Random().nextInt(3)) {
             case 0:
                 return new Circle();
