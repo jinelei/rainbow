@@ -1,0 +1,19 @@
+@startuml
+
+class SingletonPatternDemo {
+    +void main()
+}
+
+class SingleObject {
+    -SingleObject instance
+    -SingleObject()
+    +SingleObject getInstance()
+    +void showMessage()
+}
+
+SingletonPatternDemo --> SingleObject: asks
+
+SingleObject -- SingleObject: returns
+
+
+@enduml
