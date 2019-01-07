@@ -1,0 +1,49 @@
+@startuml
+
+interface AdventageMediaPlayer {
+    +void:playVlc()
+    +void:playMp4()
+}
+
+class VlcPlayer {
+    +void:playVlc()
+    +void:playMp4()
+}
+
+class Mp4Player {
+    +void:playVlc()
+    +void:playMp4()
+}
+
+AdventageMediaPlayer <.. VlcPlayer
+AdventageMediaPlayer <.. Mp4Player
+
+interface MediaPlayer {
+    +void:play()
+}
+
+class MediaAdapter {
+    -AdventageMediaPlayer:adventageMediaPlayer;
+    +void:MediaplayAdapter()
+    +void:play()
+}
+
+class AudioPlayer {
+    -MediaPlayer:mediaPlayer;
+    +void:AudioplayAdapter()
+    +void:play()
+}
+
+MediaAdapter ..> MediaPlayer: "implements"
+AudioPlayer ..> MediaPlayer: "implements"
+
+MediaAdapter --> AdventageMediaPlayer: "use"
+AudioPlayer --> MediaAdapter: "use"
+
+class TestDemo {
+    +void: main()
+}
+
+TestDemo --> AudioPlayer: "use"
+
+@enduml
