@@ -15,7 +15,15 @@ public class GlobalExceptionhandler {
 
     @ExceptionHandler(value = {CustomizeException.class})
     @ResponseBody
-    public ErrorView handleException(CustomizeException e) {
+    public ErrorView handleCustomizeException(CustomizeException e) {
         return new ErrorView(e);
     }
+
+    @ExceptionHandler(value = {Exception.class})
+    @ResponseBody
+    public Exception handleException(Exception e) {
+        return e;
+    }
+
+
 }
