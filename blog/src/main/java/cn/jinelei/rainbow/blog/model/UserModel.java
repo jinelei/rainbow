@@ -64,6 +64,28 @@ public class UserModel {
                 '}';
     }
 
+    public boolean equalsWithId(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserModel userModel = (UserModel) o;
+        return Objects.equals(username, userModel.username) &&
+                Objects.equals(nickname, userModel.nickname) &&
+                Objects.equals(phone, userModel.phone) &&
+                Objects.equals(email, userModel.email) &&
+                Objects.equals(province, userModel.province) &&
+                Objects.equals(city, userModel.city) &&
+                userPrivilege == userModel.userPrivilege &&
+                groupPrivilege == userModel.groupPrivilege &&
+                Objects.equals(articles, userModel.articles) &&
+                Objects.equals(categories, userModel.categories) &&
+                Objects.equals(tags, userModel.tags) &&
+                Objects.equals(comments, userModel.comments);
+    }
+
     public UserModel() {
     }
 

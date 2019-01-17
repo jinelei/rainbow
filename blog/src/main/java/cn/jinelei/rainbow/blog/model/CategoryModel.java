@@ -2,6 +2,7 @@ package cn.jinelei.rainbow.blog.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zhenlei
@@ -28,6 +29,23 @@ public class CategoryModel {
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "categoryCreator")
     private UserModel categoryCreator;
+
+    public boolean equalsWithoutId(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CategoryModel that = (CategoryModel) o;
+        return Objects.equals(createTime, that.createTime) &&
+                Objects.equals(modifyTime, that.modifyTime) &&
+                Objects.equals(accessTime, that.accessTime) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(articles, that.articles) &&
+                Objects.equals(categoryCreator, that.categoryCreator);
+    }
 
     public CategoryModel() {
     }

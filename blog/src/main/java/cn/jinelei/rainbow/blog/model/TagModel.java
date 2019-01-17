@@ -2,6 +2,7 @@ package cn.jinelei.rainbow.blog.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zhenlei
@@ -41,6 +42,23 @@ public class TagModel {
                 ", articles=" + articles +
                 ", tagCreator=" + tagCreator +
                 '}';
+    }
+
+    public boolean equalsWithoutId(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        TagModel tagModel = (TagModel) o;
+        return Objects.equals(createTime, tagModel.createTime) &&
+                Objects.equals(modifyTime, tagModel.modifyTime) &&
+                Objects.equals(accessTime, tagModel.accessTime) &&
+                Objects.equals(name, tagModel.name) &&
+                Objects.equals(summary, tagModel.summary) &&
+                Objects.equals(articles, tagModel.articles) &&
+                Objects.equals(tagCreator, tagModel.tagCreator);
     }
 
     public TagModel() {

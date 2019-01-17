@@ -2,6 +2,7 @@ package cn.jinelei.rainbow.blog.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zhenlei
@@ -35,6 +36,24 @@ public class ArticleModel {
     @Column
     @OneToMany(targetEntity = CommentModel.class, cascade = CascadeType.REFRESH, mappedBy = "article")
     private List<CommentModel> comments;
+
+    public boolean equalsWithoutId(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ArticleModel that = (ArticleModel) o;
+        return Objects.equals(createTime, that.createTime) &&
+                Objects.equals(modifyTime, that.modifyTime) &&
+                Objects.equals(accessTime, that.accessTime) &&
+                Objects.equals(content, that.content) &&
+                Objects.equals(author, that.author) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(tags, that.tags) &&
+                Objects.equals(comments, that.comments);
+    }
 
     @Override
     public String toString() {
