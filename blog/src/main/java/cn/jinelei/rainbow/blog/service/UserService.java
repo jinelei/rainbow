@@ -2,6 +2,9 @@ package cn.jinelei.rainbow.blog.service;
 
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.model.UserModel;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * @author zhenlei
@@ -30,4 +33,7 @@ public interface UserService {
      * @throws CustomizeException
      */
     UserModel updateUser(UserModel userModel) throws CustomizeException;
+
+    @Transactional(rollbackFor = {CustomizeException.class, Exception.class})
+    Optional<UserModel> findUserById(Integer id) throws CustomizeException;
 }

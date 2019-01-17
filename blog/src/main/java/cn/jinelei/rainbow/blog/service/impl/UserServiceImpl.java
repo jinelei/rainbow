@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author zhenlei
  */
@@ -43,4 +45,12 @@ public class UserServiceImpl implements UserService {
         }
         return saveResult;
     }
+
+    @Override
+    @Transactional(rollbackFor = {CustomizeException.class, Exception.class})
+    public Optional<UserModel> findUserById(Integer id) throws CustomizeException {
+        Optional<UserModel> findResult = userRepository.findById(id);
+        return findResult;
+    }
+
 }
