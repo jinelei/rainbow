@@ -2,8 +2,11 @@ package cn.jinelei.rainbow.blog.model;
 
 import cn.jinelei.rainbow.blog.model.enumerate.GroupPrivilege;
 import cn.jinelei.rainbow.blog.model.enumerate.UserPrivilege;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,36 +15,50 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user")
+@JacksonXmlRootElement(localName ="user")
 public class UserModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private Integer userId;
     @Column
+    @XmlElement
     private String username;
     @Column
+    @XmlElement
     private String nickname;
     @Column
+    @XmlElement
     private String phone;
     @Column
+    @XmlElement
     private String email;
     @Column
+    @XmlElement
     private String province;
     @Column
+    @XmlElement
     private String city;
     @Column
+    @XmlElement
     private UserPrivilege userPrivilege;
     @Column
+    @XmlElement
     private GroupPrivilege groupPrivilege;
     @Column
+    @XmlElement
     @OneToMany(targetEntity = ArticleModel.class, cascade = CascadeType.REFRESH, mappedBy = "author")
     private List<ArticleModel> articles;
     @Column
+    @XmlElement
     @OneToMany(targetEntity = CategoryModel.class, cascade = CascadeType.REFRESH, mappedBy = "categoryCreator")
     private List<CategoryModel> categories;
     @Column
+    @XmlElement
     @OneToMany(targetEntity = TagModel.class, cascade = CascadeType.REFRESH, mappedBy = "tagCreator")
     private List<TagModel> tags;
     @Column
+    @XmlElement
     @OneToMany(targetEntity = CommentModel.class, cascade = CascadeType.REFRESH, mappedBy = "commentator")
     private List<CommentModel> comments;
 

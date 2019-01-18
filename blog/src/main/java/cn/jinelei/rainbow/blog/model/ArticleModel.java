@@ -1,6 +1,10 @@
 package cn.jinelei.rainbow.blog.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,31 +13,41 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "article")
+@JacksonXmlRootElement(localName = "article")
 public class ArticleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     @Column(name = "article_id")
     private Integer articleId;
+    @XmlElement
     @Column(name = "create_time")
     private Long createTime;
+    @XmlElement
     @Column(name = "modify_time")
     private Long modifyTime;
+    @XmlElement
     @Column(name = "access_time")
     private Long accessTime;
+    @XmlElement
     @Column(name = "content")
     private String content;
+    @XmlElement
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "author")
     private UserModel author;
+    @XmlElement
     @ManyToOne(targetEntity = CategoryModel.class)
     @JoinColumn(name = "category")
     private CategoryModel category;
+    @XmlElement
     @ManyToMany
     @JoinTable(name = "article_tag",
             joinColumns = {@JoinColumn(name = "article_id", referencedColumnName = "article_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "tag_id")})
     private List<TagModel> tags;
     @Column
+    @XmlElement
     @OneToMany(targetEntity = CommentModel.class, cascade = CascadeType.REFRESH, mappedBy = "article")
     private List<CommentModel> comments;
 

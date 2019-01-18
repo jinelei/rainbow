@@ -1,6 +1,10 @@
 package cn.jinelei.rainbow.blog.model;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -9,22 +13,30 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "comment")
+@JacksonXmlRootElement(localName = "comment")
 public class CommentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     @Column(name = "comment_id")
     private Integer commentId;
+    @XmlElement
     @Column(name = "create_time")
     private Long createTime;
+    @XmlElement
     @Column(name = "modify_time")
     private Long modifyTime;
+    @XmlElement
     @Column(name = "access_time")
     private Long accessTime;
+    @XmlElement
     @Column(name = "content")
     private String content;
+    @XmlElement
     @ManyToOne(targetEntity = UserModel.class)
     @JoinColumn(name = "commentator")
     private UserModel commentator;
+    @XmlElement
     @ManyToOne(targetEntity = ArticleModel.class)
     @JoinColumn(name = "article")
     private ArticleModel article;
