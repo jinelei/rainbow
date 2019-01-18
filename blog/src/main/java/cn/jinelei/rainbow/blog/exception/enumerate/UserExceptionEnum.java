@@ -5,11 +5,19 @@ package cn.jinelei.rainbow.blog.exception.enumerate;
  */
 
 public enum UserExceptionEnum {
+    /**
+     * 插入失败
+     */
     INSERT_DATA_ERROR(900001, "insert data error"),
     UPDATE_DATA_ERROR(900002, "update data error"),
     REMOVE_DATA_ERROR(900004, "remove data error"),
     QUERY_DATA_ERROR(900008, "query data error"),
     USER_NOT_FOUND(900016, "user not found"),
+    USERNAME_OR_PASSWORD_INVAILD(9000032, "username or password invaild"),
+    NEED_FIELD(9000064, "need field"),
+    UNAUTHORIZED_USER(9000128, "unauthorized user"),
+    UNAUTHORIZED_GROUP(9000256, "unauthorized group"),
+    USER_NOT_LOGIN(9000512, "user not login"),
     UNKNOW_ERROR(999999, "unknow error");
     private Integer code;
     private String message;
@@ -26,4 +34,5 @@ public enum UserExceptionEnum {
     public String getMessage() {
         return message;
     }
+
 }

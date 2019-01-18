@@ -1,10 +1,9 @@
-package cn.jinelei.rainbow.blog.model;
+package cn.jinelei.rainbow.blog.entity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "article")
 @JacksonXmlRootElement(localName = "article")
-public class ArticleModel {
+public class ArticleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlElement
@@ -33,23 +32,23 @@ public class ArticleModel {
     @Column(name = "content")
     private String content;
     @XmlElement
-    @ManyToOne(targetEntity = UserModel.class)
+    @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "author")
-    private UserModel author;
+    private UserEntity author;
     @XmlElement
-    @ManyToOne(targetEntity = CategoryModel.class)
+    @ManyToOne(targetEntity = CategoryEntity.class)
     @JoinColumn(name = "category")
-    private CategoryModel category;
+    private CategoryEntity category;
     @XmlElement
     @ManyToMany
     @JoinTable(name = "article_tag",
             joinColumns = {@JoinColumn(name = "article_id", referencedColumnName = "article_id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "tag_id")})
-    private List<TagModel> tags;
+    private List<TagEntity> tags;
     @Column
     @XmlElement
-    @OneToMany(targetEntity = CommentModel.class, cascade = CascadeType.REFRESH, mappedBy = "article")
-    private List<CommentModel> comments;
+    @OneToMany(targetEntity = CommentEntity.class, cascade = CascadeType.REFRESH, mappedBy = "article")
+    private List<CommentEntity> comments;
 
     public boolean equalsWithoutId(Object o) {
         if (this == o) {
@@ -58,7 +57,7 @@ public class ArticleModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ArticleModel that = (ArticleModel) o;
+        ArticleEntity that = (ArticleEntity) o;
         return Objects.equals(createTime, that.createTime) &&
                 Objects.equals(modifyTime, that.modifyTime) &&
                 Objects.equals(accessTime, that.accessTime) &&
@@ -83,10 +82,10 @@ public class ArticleModel {
                 '}';
     }
 
-    public ArticleModel() {
+    public ArticleEntity() {
     }
 
-    public ArticleModel(Long createTime, Long modifyTime, Long accessTime, String content, UserModel author, CategoryModel category, List<TagModel> tags, List<CommentModel> comments) {
+    public ArticleEntity(Long createTime, Long modifyTime, Long accessTime, String content, UserEntity author, CategoryEntity category, List<TagEntity> tags, List<CommentEntity> comments) {
 
         this.createTime = createTime;
         this.modifyTime = modifyTime;
@@ -139,35 +138,35 @@ public class ArticleModel {
         this.content = content;
     }
 
-    public UserModel getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(UserModel author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 
-    public CategoryModel getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(CategoryModel category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
-    public List<TagModel> getTagList() {
+    public List<TagEntity> getTagList() {
         return tags;
     }
 
-    public void setTagList(List<TagModel> tags) {
+    public void setTagList(List<TagEntity> tags) {
         this.tags = tags;
     }
 
-    public List<CommentModel> getCommentList() {
+    public List<CommentEntity> getCommentList() {
         return comments;
     }
 
-    public void setCommentList(List<CommentModel> comments) {
+    public void setCommentList(List<CommentEntity> comments) {
         this.comments = comments;
     }
 }

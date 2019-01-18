@@ -1,10 +1,9 @@
-package cn.jinelei.rainbow.blog.model;
+package cn.jinelei.rainbow.blog.entity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tag")
 @JacksonXmlRootElement(localName = "tag")
-public class TagModel {
+public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
@@ -36,16 +35,16 @@ public class TagModel {
     @Column(name = "summarty")
     private String summary;
     @XmlElement
-    @ManyToMany(targetEntity = ArticleModel.class, mappedBy = "tags")
-    private List<ArticleModel> articles;
+    @ManyToMany(targetEntity = ArticleEntity.class, mappedBy = "tags")
+    private List<ArticleEntity> articles;
     @XmlElement
-    @ManyToOne(targetEntity = UserModel.class)
+    @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "tagCreator")
-    private UserModel tagCreator;
+    private UserEntity tagCreator;
 
     @Override
     public String toString() {
-        return "TagModel{" +
+        return "TagEntity{" +
                 "tagId=" + tagId +
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
@@ -64,20 +63,20 @@ public class TagModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TagModel tagModel = (TagModel) o;
-        return Objects.equals(createTime, tagModel.createTime) &&
-                Objects.equals(modifyTime, tagModel.modifyTime) &&
-                Objects.equals(accessTime, tagModel.accessTime) &&
-                Objects.equals(name, tagModel.name) &&
-                Objects.equals(summary, tagModel.summary) &&
-                Objects.equals(articles, tagModel.articles) &&
-                Objects.equals(tagCreator, tagModel.tagCreator);
+        TagEntity tagEntity = (TagEntity) o;
+        return Objects.equals(createTime, tagEntity.createTime) &&
+                Objects.equals(modifyTime, tagEntity.modifyTime) &&
+                Objects.equals(accessTime, tagEntity.accessTime) &&
+                Objects.equals(name, tagEntity.name) &&
+                Objects.equals(summary, tagEntity.summary) &&
+                Objects.equals(articles, tagEntity.articles) &&
+                Objects.equals(tagCreator, tagEntity.tagCreator);
     }
 
-    public TagModel() {
+    public TagEntity() {
     }
 
-    public TagModel(Long createTime, Long modifyTime, Long accessTime, String name, String summary, List<ArticleModel> articles, UserModel tagCreator) {
+    public TagEntity(Long createTime, Long modifyTime, Long accessTime, String name, String summary, List<ArticleEntity> articles, UserEntity tagCreator) {
         this.createTime = createTime;
         this.modifyTime = modifyTime;
         this.accessTime = accessTime;
@@ -135,19 +134,19 @@ public class TagModel {
         this.summary = summary;
     }
 
-    public List<ArticleModel> getArticleList() {
+    public List<ArticleEntity> getArticleList() {
         return articles;
     }
 
-    public void setArticleList(List<ArticleModel> articles) {
+    public void setArticleList(List<ArticleEntity> articles) {
         this.articles = articles;
     }
 
-    public UserModel getTagCreator() {
+    public UserEntity getTagCreator() {
         return tagCreator;
     }
 
-    public void setTagCreator(UserModel tagCreator) {
+    public void setTagCreator(UserEntity tagCreator) {
         this.tagCreator = tagCreator;
     }
 }

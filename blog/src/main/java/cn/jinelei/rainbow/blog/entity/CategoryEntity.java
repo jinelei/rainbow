@@ -1,10 +1,9 @@
-package cn.jinelei.rainbow.blog.model;
+package cn.jinelei.rainbow.blog.entity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "category")
 @JacksonXmlRootElement(localName = "category")
-public class CategoryModel {
+public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
@@ -36,12 +35,12 @@ public class CategoryModel {
     @Column(name = "summary")
     private String summary;
     @XmlElement
-    @OneToMany(targetEntity = ArticleModel.class, mappedBy = "category")
-    private List<ArticleModel> articles;
+    @OneToMany(targetEntity = ArticleEntity.class, mappedBy = "category")
+    private List<ArticleEntity> articles;
     @XmlElement
-    @ManyToOne(targetEntity = UserModel.class)
+    @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "categoryCreator")
-    private UserModel categoryCreator;
+    private UserEntity categoryCreator;
 
     public boolean equalsWithoutId(Object o) {
         if (this == o) {
@@ -50,7 +49,7 @@ public class CategoryModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CategoryModel that = (CategoryModel) o;
+        CategoryEntity that = (CategoryEntity) o;
         return Objects.equals(createTime, that.createTime) &&
                 Objects.equals(modifyTime, that.modifyTime) &&
                 Objects.equals(accessTime, that.accessTime) &&
@@ -60,10 +59,10 @@ public class CategoryModel {
                 Objects.equals(categoryCreator, that.categoryCreator);
     }
 
-    public CategoryModel() {
+    public CategoryEntity() {
     }
 
-    public CategoryModel(Long createTime, Long modifyTime, Long accessTime, String name, String summary, List<ArticleModel> articles, UserModel categoryCreator) {
+    public CategoryEntity(Long createTime, Long modifyTime, Long accessTime, String name, String summary, List<ArticleEntity> articles, UserEntity categoryCreator) {
         this.createTime = createTime;
         this.modifyTime = modifyTime;
         this.accessTime = accessTime;
@@ -121,19 +120,19 @@ public class CategoryModel {
         this.summary = summary;
     }
 
-    public List<ArticleModel> getArticleList() {
+    public List<ArticleEntity> getArticleList() {
         return articles;
     }
 
-    public void setArticleList(List<ArticleModel> articles) {
+    public void setArticleList(List<ArticleEntity> articles) {
         this.articles = articles;
     }
 
-    public UserModel getCategoryCreator() {
+    public UserEntity getCategoryCreator() {
         return categoryCreator;
     }
 
-    public void setCategoryCreator(UserModel categoryCreator) {
+    public void setCategoryCreator(UserEntity categoryCreator) {
         this.categoryCreator = categoryCreator;
     }
 }

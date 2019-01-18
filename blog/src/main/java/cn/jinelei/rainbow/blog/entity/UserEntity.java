@@ -1,12 +1,11 @@
-package cn.jinelei.rainbow.blog.model;
+package cn.jinelei.rainbow.blog.entity;
 
-import cn.jinelei.rainbow.blog.model.enumerate.GroupPrivilege;
-import cn.jinelei.rainbow.blog.model.enumerate.UserPrivilege;
+import cn.jinelei.rainbow.blog.entity.enumerate.GroupPrivilege;
+import cn.jinelei.rainbow.blog.entity.enumerate.UserPrivilege;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,8 +14,8 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "user")
-@JacksonXmlRootElement(localName ="user")
-public class UserModel {
+@JacksonXmlRootElement(localName = "user")
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlElement
@@ -27,6 +26,9 @@ public class UserModel {
     @Column
     @XmlElement
     private String nickname;
+    @Column
+    @XmlElement
+    private String password;
     @Column
     @XmlElement
     private String phone;
@@ -41,33 +43,34 @@ public class UserModel {
     private String city;
     @Column
     @XmlElement
-    private UserPrivilege userPrivilege;
+    private UserPrivilege userPrivilege = UserPrivilege.TOURIST_USER;
     @Column
     @XmlElement
-    private GroupPrivilege groupPrivilege;
+    private GroupPrivilege groupPrivilege = GroupPrivilege.TOURIST_GROUP;
     @Column
     @XmlElement
-    @OneToMany(targetEntity = ArticleModel.class, cascade = CascadeType.REFRESH, mappedBy = "author")
-    private List<ArticleModel> articles;
+    @OneToMany(targetEntity = ArticleEntity.class, cascade = CascadeType.REFRESH, mappedBy = "author")
+    private List<ArticleEntity> articles;
     @Column
     @XmlElement
-    @OneToMany(targetEntity = CategoryModel.class, cascade = CascadeType.REFRESH, mappedBy = "categoryCreator")
-    private List<CategoryModel> categories;
+    @OneToMany(targetEntity = CategoryEntity.class, cascade = CascadeType.REFRESH, mappedBy = "categoryCreator")
+    private List<CategoryEntity> categories;
     @Column
     @XmlElement
-    @OneToMany(targetEntity = TagModel.class, cascade = CascadeType.REFRESH, mappedBy = "tagCreator")
-    private List<TagModel> tags;
+    @OneToMany(targetEntity = TagEntity.class, cascade = CascadeType.REFRESH, mappedBy = "tagCreator")
+    private List<TagEntity> tags;
     @Column
     @XmlElement
-    @OneToMany(targetEntity = CommentModel.class, cascade = CascadeType.REFRESH, mappedBy = "commentator")
-    private List<CommentModel> comments;
+    @OneToMany(targetEntity = CommentEntity.class, cascade = CascadeType.REFRESH, mappedBy = "commentator")
+    private List<CommentEntity> comments;
 
     @Override
     public String toString() {
-        return "UserModel{" +
+        return "UserEntity{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", province='" + province + '\'' +
@@ -88,27 +91,30 @@ public class UserModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UserModel userModel = (UserModel) o;
-        return Objects.equals(username, userModel.username) &&
-                Objects.equals(nickname, userModel.nickname) &&
-                Objects.equals(phone, userModel.phone) &&
-                Objects.equals(email, userModel.email) &&
-                Objects.equals(province, userModel.province) &&
-                Objects.equals(city, userModel.city) &&
-                userPrivilege == userModel.userPrivilege &&
-                groupPrivilege == userModel.groupPrivilege &&
-                Objects.equals(articles, userModel.articles) &&
-                Objects.equals(categories, userModel.categories) &&
-                Objects.equals(tags, userModel.tags) &&
-                Objects.equals(comments, userModel.comments);
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(username, that.username) &&
+                Objects.equals(nickname, that.nickname) &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(phone, that.phone) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(province, that.province) &&
+                Objects.equals(city, that.city) &&
+                userPrivilege == that.userPrivilege &&
+                groupPrivilege == that.groupPrivilege &&
+                Objects.equals(articles, that.articles) &&
+                Objects.equals(categories, that.categories) &&
+                Objects.equals(tags, that.tags) &&
+                Objects.equals(comments, that.comments);
     }
 
-    public UserModel() {
+    public UserEntity() {
     }
 
-    public UserModel(String username, String nickname, String phone, String email, String province, String city, UserPrivilege userPrivilege, GroupPrivilege groupPrivilege, List<ArticleModel> articles, List<CategoryModel> categories, List<TagModel> tags, List<CommentModel> comments) {
+    public UserEntity(String username, String nickname, String password, String phone, String email, String province, String city, UserPrivilege userPrivilege, GroupPrivilege groupPrivilege, List<ArticleEntity> articles, List<CategoryEntity> categories, List<TagEntity> tags, List<CommentEntity> comments) {
+
         this.username = username;
         this.nickname = nickname;
+        this.password = password;
         this.phone = phone;
         this.email = email;
         this.province = province;
@@ -143,6 +149,14 @@ public class UserModel {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPhone() {
@@ -193,43 +207,35 @@ public class UserModel {
         this.groupPrivilege = groupPrivilege;
     }
 
-    public List<ArticleModel> getArticles() {
+    public List<ArticleEntity> getArticles() {
         return articles;
     }
 
-    public void setArticles(List<ArticleModel> articles) {
+    public void setArticles(List<ArticleEntity> articles) {
         this.articles = articles;
     }
 
-    public List<CategoryModel> getcategories() {
+    public List<CategoryEntity> getCategories() {
         return categories;
     }
 
-    public void setcategories(List<CategoryModel> categories) {
+    public void setCategories(List<CategoryEntity> categories) {
         this.categories = categories;
     }
 
-    public List<TagModel> getTagList() {
+    public List<TagEntity> getTags() {
         return tags;
     }
 
-    public void setTagList(List<TagModel> tags) {
+    public void setTags(List<TagEntity> tags) {
         this.tags = tags;
     }
 
-    public List<CategoryModel> getCategoryList() {
-        return categories;
-    }
-
-    public void setCategoryList(List<CategoryModel> categories) {
-        this.categories = categories;
-    }
-
-    public List<CommentModel> getCommentList() {
+    public List<CommentEntity> getComments() {
         return comments;
     }
 
-    public void setCommentList(List<CommentModel> comments) {
+    public void setComments(List<CommentEntity> comments) {
         this.comments = comments;
     }
 }

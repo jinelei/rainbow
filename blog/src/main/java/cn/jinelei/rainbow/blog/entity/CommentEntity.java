@@ -1,11 +1,9 @@
-package cn.jinelei.rainbow.blog.model;
+package cn.jinelei.rainbow.blog.entity;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "comment")
 @JacksonXmlRootElement(localName = "comment")
-public class CommentModel {
+public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlElement
@@ -33,13 +31,13 @@ public class CommentModel {
     @Column(name = "content")
     private String content;
     @XmlElement
-    @ManyToOne(targetEntity = UserModel.class)
+    @ManyToOne(targetEntity = UserEntity.class)
     @JoinColumn(name = "commentator")
-    private UserModel commentator;
+    private UserEntity commentator;
     @XmlElement
-    @ManyToOne(targetEntity = ArticleModel.class)
+    @ManyToOne(targetEntity = ArticleEntity.class)
     @JoinColumn(name = "article")
-    private ArticleModel article;
+    private ArticleEntity article;
 
     public boolean equalsWithoutId(Object o) {
         if (this == o) {
@@ -48,7 +46,7 @@ public class CommentModel {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CommentModel that = (CommentModel) o;
+        CommentEntity that = (CommentEntity) o;
         return Objects.equals(createTime, that.createTime) &&
                 Objects.equals(modifyTime, that.modifyTime) &&
                 Objects.equals(accessTime, that.accessTime) &&
@@ -57,10 +55,10 @@ public class CommentModel {
                 Objects.equals(article, that.article);
     }
 
-    public CommentModel() {
+    public CommentEntity() {
     }
 
-    public CommentModel(Long createTime, Long modifyTime, Long accessTime, String content, UserModel commentator, ArticleModel article) {
+    public CommentEntity(Long createTime, Long modifyTime, Long accessTime, String content, UserEntity commentator, ArticleEntity article) {
 
         this.createTime = createTime;
         this.modifyTime = modifyTime;
@@ -111,19 +109,19 @@ public class CommentModel {
         this.content = content;
     }
 
-    public UserModel getCommentator() {
+    public UserEntity getCommentator() {
         return commentator;
     }
 
-    public void setCommentator(UserModel commentator) {
+    public void setCommentator(UserEntity commentator) {
         this.commentator = commentator;
     }
 
-    public ArticleModel getArticle() {
+    public ArticleEntity getArticle() {
         return article;
     }
 
-    public void setArticle(ArticleModel article) {
+    public void setArticle(ArticleEntity article) {
         this.article = article;
     }
 }

@@ -1,6 +1,6 @@
 package cn.jinelei.rainbow.blog.repository;
 
-import cn.jinelei.rainbow.blog.model.TagModel;
+import cn.jinelei.rainbow.blog.entity.TagEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author zhenlei
  */
 @Repository
-public interface TagRepository extends CrudRepository<TagModel, Integer> {
+public interface TagRepository extends CrudRepository<TagEntity, Integer> {
 }

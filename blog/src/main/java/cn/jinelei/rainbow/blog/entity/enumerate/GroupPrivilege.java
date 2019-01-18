@@ -1,12 +1,13 @@
-package cn.jinelei.rainbow.blog.model.enumerate;
+package cn.jinelei.rainbow.blog.entity.enumerate;
 
 /**
  * @author zhenlei
  */
 
 public enum GroupPrivilege {
-    NORMAL_USER(1, "normal"),
-    ROOT_USER(2, "root");
+    TOURIST_GROUP(1, "normal"),
+    NORMAL_GROUP(2, "normal"),
+    ROOT_GROUP(4, "root");
     private int code;
     private String desc;
 
@@ -26,5 +27,11 @@ public enum GroupPrivilege {
 
     public String getDesc() {
         return desc;
+    }
+
+    public static class Constants {
+        public static final int TOURIST_GROUP = 1;
+        public static final int NORMAL_GROUP = 2;
+        public static final int ROOT_GROUP = 4;
     }
 }

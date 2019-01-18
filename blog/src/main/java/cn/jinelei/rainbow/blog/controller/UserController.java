@@ -3,16 +3,18 @@ package cn.jinelei.rainbow.blog.controller;
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.exception.enumerate.BaseExceptionEnum;
 import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
-import cn.jinelei.rainbow.blog.model.UserModel;
+import cn.jinelei.rainbow.blog.entity.UserEntity;
 import cn.jinelei.rainbow.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.Optional;
 
@@ -24,50 +26,78 @@ import java.util.Optional;
 @RequestMapping("/user")
 public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+    @Autowired
+    HttpServletRequest request;
 
     @Autowired
     UserService userService;
 
-    @RequestMapping("/exception")
-    public String testException() throws CustomizeException {
+    @RequestMapping(value = "/test",
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public String test() throws CustomizeException {
+        LOGGER.debug(request.getServletContext().getRealPath("/"));
+        LOGGER.debug(request.getServletContext().getContextPath());
         throw new CustomizeException(BaseExceptionEnum.INSERT_DATA_ERROR);
     }
 
-    @RequestMapping("/test")
-    public String test() throws CustomizeException {
-        return "test";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserModel> addUser(@RequestBody UserModel userModel) throws CustomizeException {
-        LOGGER.debug("addUser: " + userModel);
-        UserModel opeartionResult = userService.addUser(userModel);
+    @RequestMapping(method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<UserEntity> addUser(
+            @RequestBody UserEntity userEntity) throws CustomizeException {
+        LOGGER.debug("addUser: " + userEntity);
+        UserEntity opeartionResult = userService.addUser(userEntity);
         HttpHeaders httpHeaders = new HttpHeaders();
-        URI locationUrl = URI.create("localhost:8080/user/" + opeartionResult.getUserId());
+        URI locationUrl = URI.create(String.format("http://%s:%d/user/id/%d",
+                request.getLocalName(), request.getLocalPort(), opeartionResult.getUserId()));
         httpHeaders.setLocation(locationUrl);
-        return new ResponseEntity<UserModel>(opeartionResult, httpHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<UserEntity>(opeartionResult, httpHeaders, HttpStatus.CREATED);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
-    public void deleteUser(UserModel userModel) throws CustomizeException {
-        userService.removeUser(userModel);
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE,
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public void deleteUser(UserEntity userEntity) throws CustomizeException {
+        userService.removeUser(userEntity);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public UserModel updateUser(UserModel userModel) throws CustomizeException {
-        UserModel opeartionResult = userService.updateUser(userModel);
+    @RequestMapping(method = RequestMethod.PUT,
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public UserEntity updateUser(UserEntity userEntity) throws CustomizeException {
+        UserEntity opeartionResult = userService.updateUser(userEntity);
         return opeartionResult;
     }
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
-    public ResponseEntity<UserModel> getUserById(@PathVariable(name = "id", required = true) Integer id) throws CustomizeException {
-        Optional<UserModel> opeartionResult = userService.findUserById(id);
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET,
+            consumes = {MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
+                    MediaType.APPLICATION_JSON_VALUE,
+                    MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<UserEntity> getUserById(
+            @PathVariable(name = "id", required = true) Integer id) throws CustomizeException {
+        UserEntity opeartionResult = userService.findUserById(id);
         LOGGER.debug("getUserById: " + id);
-        if (opeartionResult.isPresent()) {
-            return new ResponseEntity<UserModel>(opeartionResult.get(), HttpStatus.OK);
-        } else {
-            throw new CustomizeException(UserExceptionEnum.USER_NOT_FOUND);
-        }
+        return new ResponseEntity<UserEntity>(opeartionResult, HttpStatus.OK);
     }
 
 }
