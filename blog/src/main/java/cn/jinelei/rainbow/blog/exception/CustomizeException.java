@@ -1,7 +1,6 @@
 package cn.jinelei.rainbow.blog.exception;
 
 import cn.jinelei.rainbow.blog.exception.enumerate.*;
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * @author zhenlei
