@@ -3,6 +3,7 @@ package cn.jinelei.rainbow.blog.authorization.annotation.handler;
 import cn.jinelei.rainbow.blog.authorization.annotation.Authorization;
 import cn.jinelei.rainbow.blog.constant.Constants;
 import cn.jinelei.rainbow.blog.entity.TokenEntity;
+import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     private TokenService tokenService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws CustomizeException {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -47,7 +48,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         }
 
         if (tokenService.checkToken(tokenEntity, authorization)) {
-            request.setAttribute(Constants.CURRENT_USER_ID, tokenEntity.getUserId());
+            request.setAttribute(Constants.CURRENT_USER_ID, tokenEntity.getUserEntity().getUserId());
             return true;
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

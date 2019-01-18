@@ -8,6 +8,7 @@ import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
 import cn.jinelei.rainbow.blog.service.TokenService;
 import cn.jinelei.rainbow.blog.service.UserService;
+import cn.jinelei.rainbow.blog.service.impl.TokenServiceTestImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * @author zhenlei
@@ -45,9 +47,14 @@ public class TokenController {
 
     @Authorization
     @RequestMapping(method = RequestMethod.DELETE)
-    public ResponseEntity logout(@CurrentUser UserEntity user) {
+    public ResponseEntity logout(@CurrentUser UserEntity user) throws CustomizeException {
         tokenService.deleteToken(user);
         return ResponseEntity.ok("注销成功");
+    }
+
+    @RequestMapping("/test")
+    public Map test() {
+        return ((TokenServiceTestImpl) tokenService).getTokenStore();
     }
 
 }

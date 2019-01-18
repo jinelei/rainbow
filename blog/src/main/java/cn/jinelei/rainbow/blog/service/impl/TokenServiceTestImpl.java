@@ -4,13 +4,11 @@ import cn.jinelei.rainbow.blog.authorization.annotation.Authorization;
 import cn.jinelei.rainbow.blog.entity.TokenEntity;
 import cn.jinelei.rainbow.blog.entity.UserEntity;
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
-import cn.jinelei.rainbow.blog.exception.enumerate.BaseExceptionEnum;
 import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
 import cn.jinelei.rainbow.blog.service.TokenService;
 import cn.jinelei.rainbow.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.security.provider.MD5;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +22,10 @@ public class TokenServiceTestImpl implements TokenService {
 
     @Autowired
     UserService userService;
+
+    public Map<UserEntity, String> getTokenStore() {
+        return tokenStore;
+    }
 
     @Override
     public TokenEntity createToken(UserEntity userEntity) {

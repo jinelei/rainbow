@@ -64,26 +64,6 @@ public class UserEntity {
     @OneToMany(targetEntity = CommentEntity.class, cascade = CascadeType.REFRESH, mappedBy = "commentator")
     private List<CommentEntity> comments;
 
-    @Override
-    public String toString() {
-        return "UserEntity{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", userPrivilege=" + userPrivilege +
-                ", groupPrivilege=" + groupPrivilege +
-                ", articles=" + articles +
-                ", categories=" + categories +
-                ", tags=" + tags +
-                ", comments=" + comments +
-                '}';
-    }
-
     public boolean equalsWithId(Object o) {
         if (this == o) {
             return true;
