@@ -18,6 +18,8 @@ public enum UserExceptionEnum {
     UNAUTHORIZED_USER(9000128, "unauthorized user"),
     UNAUTHORIZED_GROUP(9000256, "unauthorized group"),
     USER_NOT_LOGIN(9000512, "user not login"),
+    EMAIL_ALREADY_EXIST(9001024, "email already exist"),
+    PHONE_ALREADY_EXIST(9002048, "phone already exist"),
     UNKNOW_ERROR(999999, "unknow error");
     private Integer code;
     private String message;

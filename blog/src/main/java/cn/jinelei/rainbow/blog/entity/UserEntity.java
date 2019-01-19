@@ -90,7 +90,10 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(String username, String nickname, String password, String phone, String email, String province, String city, UserPrivilege userPrivilege, GroupPrivilege groupPrivilege, List<ArticleEntity> articles, List<CategoryEntity> categories, List<TagEntity> tags, List<CommentEntity> comments) {
+    public UserEntity(String username, String nickname, String password, String phone, String email, String province,
+                      String city, UserPrivilege userPrivilege, GroupPrivilege groupPrivilege,
+                      List<ArticleEntity> articles, List<CategoryEntity> categories, List<TagEntity> tags,
+                      List<CommentEntity> comments) {
 
         this.username = username;
         this.nickname = nickname;

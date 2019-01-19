@@ -4,6 +4,7 @@ import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.entity.UserEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -56,4 +57,26 @@ public interface UserService {
      */
     UserEntity validUserByUsernameAndPassword(String username, String password)
             throws CustomizeException;
+
+    /**
+     * 查询用户集合
+     *
+     * @param username
+     * @param nickname
+     * @param phone
+     * @param city
+     * @param province
+     * @param email
+     * @param page
+     * @param size
+     * @param descFilters
+     * @param ascFilters
+     * @return
+     * @throws CustomizeException
+     */
+    List<UserEntity> findUserList(String username, String nickname,
+                                  String phone, String city,
+                                  String province, String email,
+                                  Integer page, Integer size,
+                                  String[] descFilters, String[] ascFilters) throws CustomizeException;
 }

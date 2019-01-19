@@ -1,103 +1,96 @@
 package cn.jinelei.rainbow.blog.controller;
 
+import cn.jinelei.rainbow.blog.entity.UserEntity;
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.exception.enumerate.BaseExceptionEnum;
-import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
-import cn.jinelei.rainbow.blog.entity.UserEntity;
 import cn.jinelei.rainbow.blog.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author zhenlei
  */
-@RestController
-@ResponseBody
-@RequestMapping("/user")
-public class UserController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-    @Autowired
-    HttpServletRequest request;
+public interface UserController {
 
-    @Autowired
-    UserService userService;
-
-    @RequestMapping(value = "/test",
-            consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE})
-    public String test() throws CustomizeException {
-        LOGGER.debug(request.getServletContext().getRealPath("/"));
-        LOGGER.debug(request.getServletContext().getContextPath());
-        throw new CustomizeException(BaseExceptionEnum.INSERT_DATA_ERROR);
-    }
-
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE})
+    /**
+     * 添加用户 POST
+     *
+     * @param userEntity 用户实例
+     * @return 插入的结果
+     * @throws CustomizeException
+     */
     public ResponseEntity<UserEntity> addUser(
-            @RequestBody UserEntity userEntity) throws CustomizeException {
-        LOGGER.debug("addUser: " + userEntity);
-        UserEntity opeartionResult = userService.addUser(userEntity);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        URI locationUrl = URI.create(String.format("http://%s:%d/user/id/%d",
-                request.getLocalName(), request.getLocalPort(), opeartionResult.getUserId()));
-        httpHeaders.setLocation(locationUrl);
-        return new ResponseEntity<UserEntity>(opeartionResult, httpHeaders, HttpStatus.CREATED);
-    }
+            @RequestBody UserEntity userEntity) throws CustomizeException;
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.DELETE,
-            consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE})
-    public void deleteUser(UserEntity userEntity) throws CustomizeException {
-        userService.removeUser(userEntity);
-    }
+    /**
+     * 删除用户 DELETE
+     *
+     * @param id 用户id
+     * @throws CustomizeException
+     */
+    public void deleteUser(
+            @PathVariable(name = "id") Integer id) throws CustomizeException;
 
-    @RequestMapping(method = RequestMethod.PUT,
-            consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE})
-    public UserEntity updateUser(UserEntity userEntity) throws CustomizeException {
-        UserEntity opeartionResult = userService.updateUser(userEntity);
-        return opeartionResult;
-    }
+    /**
+     * 更新用户 PUT
+     *
+     * @param id         用户id
+     * @param userEntity 用户实例，有则更新
+     * @return
+     * @throws CustomizeException
+     */
+    public UserEntity updateUser(@PathVariable(name = "id") Integer id,
+                                 @RequestBody UserEntity userEntity) throws CustomizeException;
 
-    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET,
-            consumes = {MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_UTF8_VALUE,
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE})
+    /**
+     * 获取用户
+     *
+     * @param id 用户id
+     * @return
+     * @throws CustomizeException
+     */
     public ResponseEntity<UserEntity> getUserById(
-            @PathVariable(name = "id", required = true) Integer id) throws CustomizeException {
-        UserEntity opeartionResult = userService.findUserById(id);
-        LOGGER.debug("getUserById: " + id);
-        return new ResponseEntity<UserEntity>(opeartionResult, HttpStatus.OK);
-    }
+            @RequestParam(name = "id", required = false) Integer id) throws CustomizeException;
+
+    /**
+     * 查询用户集合
+     *
+     * @param username    用户名
+     * @param nickname    用户昵称
+     * @param phone       手机号
+     * @param city        城市
+     * @param province    省
+     * @param email       邮箱
+     * @param current     当前页数
+     * @param size        每页记录数量
+     * @param descFilters 降序排列的字段
+     * @param ascFilters  升序排列的字段
+     * @return 用户集合
+     * @throws CustomizeException
+     */
+    public ResponseEntity<List<UserEntity>> getUsers(
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "nickname", required = false) String nickname,
+            @RequestParam(name = "phone", required = false) String phone,
+            @RequestParam(name = "city", required = false) String city,
+            @RequestParam(name = "province", required = false) String province,
+            @RequestParam(name = "email", required = false) String email,
+            @RequestParam(name = "page", required = false) Integer page,
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "descBy", required = false) String[] descFilters,
+            @RequestParam(name = "ascBy", required = false) String[] ascFilters
+    ) throws CustomizeException;
 
 }
+
