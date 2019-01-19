@@ -71,9 +71,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity validUserByUsernameAndPassword(String username, String password) throws CustomizeException {
-        Optional<UserEntity> userEntityOption = userRepository.findUserEntityByUsernameAndPassword(username, password);
-        if (userEntityOption.isPresent()) {
-            return userEntityOption.get();
+        List<UserEntity> userEntities = userRepository.findUserEntitiesByUsernameAndPassword(username, password);
+        if (userEntities.size() == 1) {
+            return userEntities.get(0);
+        } else if (userEntities.size() > 1) {
+            throw new CustomizeException(UserExceptionEnum.USERNAME_NOT_UNIQUE);
         } else {
             throw new CustomizeException(UserExceptionEnum.USERNAME_OR_PASSWORD_INVAILD);
         }

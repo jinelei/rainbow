@@ -1,5 +1,6 @@
 package cn.jinelei.rainbow.blog.entity.enumerate;
 
+import cn.jinelei.rainbow.blog.entity.enumerate.convert.OperatorPrivilegeConvert;
 import cn.jinelei.rainbow.blog.entity.enumerate.convert.UserPrivilegeConvert;
 
 import javax.persistence.Convert;
@@ -8,15 +9,14 @@ import javax.persistence.Convert;
  * @author zhenlei
  */
 
-public enum UserPrivilege {
+public enum OperatorPrivilege {
     INVALID_VALUE(0, "invalid value"),
-    TOURIST_USER(1, "tourist user"),
-    NORMAL_USER(2, "normal user"),
-    ROOT_USER(4, "root user");
+    ONLY_MYSELF(1, "only myself"),
+    ONLY_ROOT(2, "only root");
     private int code;
     private String desc;
 
-    UserPrivilege(int code, String desc) {
+    OperatorPrivilege(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -34,23 +34,15 @@ public enum UserPrivilege {
         return desc;
     }
 
-    public static class Constants {
-        public static final int TOURIST_USER = 1;
-        public static final int NORMAL_USER = 2;
-        public static final int ROOT_USER = 4;
-    }
-
-    public static UserPrivilege resolve(int code) {
+    public static OperatorPrivilege resolve(int code) {
         switch (code) {
             case 1:
-                return UserPrivilege.TOURIST_USER;
+                return OperatorPrivilege.ONLY_MYSELF;
             case 2:
-                return UserPrivilege.NORMAL_USER;
-            case 4:
-                return UserPrivilege.ROOT_USER;
+                return OperatorPrivilege.ONLY_ROOT;
             case 0:
             default:
-                return UserPrivilege.INVALID_VALUE;
+                return OperatorPrivilege.INVALID_VALUE;
         }
     }
 }

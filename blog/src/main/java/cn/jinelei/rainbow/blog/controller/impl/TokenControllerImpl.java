@@ -5,6 +5,7 @@ import cn.jinelei.rainbow.blog.authorization.annotation.CurrentUser;
 import cn.jinelei.rainbow.blog.controller.TokenController;
 import cn.jinelei.rainbow.blog.entity.TokenEntity;
 import cn.jinelei.rainbow.blog.entity.UserEntity;
+import cn.jinelei.rainbow.blog.entity.enumerate.OperatorPrivilege;
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
 import cn.jinelei.rainbow.blog.service.TokenService;
@@ -47,7 +48,9 @@ public class TokenControllerImpl implements TokenController {
     }
 
     @Override
-    @Authorization
+    @Authorization(orConditions = {
+            @Authorization.AuthorizationCondition(grantOperator = OperatorPrivilege.ONLY_MYSELF)
+    })
     @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity logout(@CurrentUser UserEntity user) throws CustomizeException {
         tokenService.deleteToken(user);

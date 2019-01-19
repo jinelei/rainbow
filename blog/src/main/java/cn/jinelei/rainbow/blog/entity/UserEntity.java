@@ -2,6 +2,8 @@ package cn.jinelei.rainbow.blog.entity;
 
 import cn.jinelei.rainbow.blog.entity.enumerate.GroupPrivilege;
 import cn.jinelei.rainbow.blog.entity.enumerate.UserPrivilege;
+import cn.jinelei.rainbow.blog.entity.enumerate.convert.GroupPrivilegeConvert;
+import cn.jinelei.rainbow.blog.entity.enumerate.convert.UserPrivilegeConvert;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
@@ -43,9 +45,11 @@ public class UserEntity {
     private String city;
     @Column
     @XmlElement
+    @Convert(converter = UserPrivilegeConvert.class)
     private UserPrivilege userPrivilege = UserPrivilege.TOURIST_USER;
     @Column
     @XmlElement
+    @Convert(converter = GroupPrivilegeConvert.class)
     private GroupPrivilege groupPrivilege = GroupPrivilege.TOURIST_GROUP;
     @Column
     @XmlElement
@@ -88,6 +92,26 @@ public class UserEntity {
     }
 
     public UserEntity() {
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                ", userPrivilege=" + userPrivilege +
+                ", groupPrivilege=" + groupPrivilege +
+                ", articles=" + articles +
+                ", categories=" + categories +
+                ", tags=" + tags +
+                ", comments=" + comments +
+                '}';
     }
 
     public UserEntity(String username, String nickname, String password, String phone, String email, String province,

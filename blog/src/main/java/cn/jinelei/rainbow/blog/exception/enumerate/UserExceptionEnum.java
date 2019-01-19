@@ -20,6 +20,7 @@ public enum UserExceptionEnum {
     USER_NOT_LOGIN(9000512, "user not login"),
     EMAIL_ALREADY_EXIST(9001024, "email already exist"),
     PHONE_ALREADY_EXIST(9002048, "phone already exist"),
+    USERNAME_NOT_UNIQUE(9004096, "username not unique"),
     UNKNOW_ERROR(999999, "unknow error");
     private Integer code;
     private String message;

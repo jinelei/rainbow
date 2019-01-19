@@ -36,18 +36,19 @@ public class TokenServiceTestImpl implements TokenService {
 
     @Override
     public boolean checkToken(TokenEntity model, Authorization authorization) throws CustomizeException {
-        UserEntity user = model.getUserEntity();
-        boolean result = tokenStore.containsKey(user) && tokenStore.get(user).equals(model.getToken());
-        if (!result) {
-            return false;
-        }
-        if (user.getGroupPrivilege().getCode() < authorization.groupType()) {
-            throw new CustomizeException(UserExceptionEnum.UNAUTHORIZED_USER);
-        }
-        if (user.getUserPrivilege().getCode() < authorization.userType()) {
-            throw new CustomizeException(UserExceptionEnum.UNAUTHORIZED_GROUP);
-        }
-        return result;
+//        UserEntity user = model.getUserEntity();
+//        boolean result = tokenStore.containsKey(user) && tokenStore.get(user).equals(model.getToken());
+//        if (!result) {
+//            return false;
+//        }
+//        if (user.getGroupPrivilege().getCode() < authorization.groupType()) {
+//            throw new CustomizeException(UserExceptionEnum.UNAUTHORIZED_USER);
+//        }
+//        if (user.getUserPrivilege().getCode() < authorization.userType()) {
+//            throw new CustomizeException(UserExceptionEnum.UNAUTHORIZED_GROUP);
+//        }
+//        return result;
+        return true;
     }
 
     @Override
@@ -55,11 +56,12 @@ public class TokenServiceTestImpl implements TokenService {
         String[] auths = authentication.split(":");
         Integer userId = Integer.valueOf(auths[0]);
         UserEntity user = userService.findUserById(userId);
-        if (tokenStore.containsKey(user) && tokenStore.get(user).equals(auths[1])) {
-            return new TokenEntity(user, auths[1]);
-        } else {
-            return null;
+        for (Map.Entry<UserEntity, String> entry : tokenStore.entrySet()) {
+            if (entry.getKey().getUserId().equals(Integer.valueOf(auths[0]))) {
+                return new TokenEntity(entry.getKey(), entry.getValue());
+            }
         }
+        return null;
     }
 
     @Override

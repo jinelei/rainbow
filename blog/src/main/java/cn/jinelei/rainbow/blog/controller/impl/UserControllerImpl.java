@@ -1,12 +1,17 @@
 package cn.jinelei.rainbow.blog.controller.impl;
 
+import cn.jinelei.rainbow.blog.authorization.annotation.Authorization;
 import cn.jinelei.rainbow.blog.controller.UserController;
+import cn.jinelei.rainbow.blog.entity.enumerate.GroupPrivilege;
+import cn.jinelei.rainbow.blog.entity.enumerate.OperatorPrivilege;
+import cn.jinelei.rainbow.blog.entity.enumerate.UserPrivilege;
 import cn.jinelei.rainbow.blog.exception.CustomizeException;
 import cn.jinelei.rainbow.blog.exception.enumerate.BaseExceptionEnum;
 import cn.jinelei.rainbow.blog.entity.UserEntity;
 import cn.jinelei.rainbow.blog.exception.enumerate.UserExceptionEnum;
 import cn.jinelei.rainbow.blog.repository.UserRepository;
 import cn.jinelei.rainbow.blog.service.UserService;
+import org.hibernate.usertype.UserType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +76,10 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @Authorization(orConditions = {
+            @Authorization.AuthorizationCondition(grantGroup = GroupPrivilege.ROOT_GROUP),
+            @Authorization.AuthorizationCondition(grantOperator = OperatorPrivilege.ONLY_MYSELF, parameterName = "id"),
+    })
     @RequestMapping(value = "/user/id/{id}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable(name = "id") Integer id) throws CustomizeException {
         UserEntity userEntity = userService.findUserById(id);
@@ -116,6 +125,10 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
+    @Authorization(orConditions = {
+            @Authorization.AuthorizationCondition(grantGroup = GroupPrivilege.ROOT_GROUP),
+            @Authorization.AuthorizationCondition(grantOperator = OperatorPrivilege.ONLY_MYSELF, parameterName = "id"),
+    })
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public ResponseEntity<UserEntity> getUserById(
             @RequestParam(name = "id") Integer id) throws CustomizeException {
